@@ -135,3 +135,7 @@ assets
 
 #output
 output
+
+#Mac Specific file
+.DS_Store
+
