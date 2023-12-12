@@ -8,5 +8,10 @@
   },
   "keywords": [],
   "author": "Quentin Vidal",
-  "license": "BSD-3-Clause"
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "csv-parser": "^3.0.0",
+    "fs-extra": "^11.2.0",
+    "qr-code-styling": "^1.6.0-rc.1"
+  }
 }
