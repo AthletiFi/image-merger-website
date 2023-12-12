@@ -1,0 +1,1 @@
+# AthletiFi Batch QR Code Generator
