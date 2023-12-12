@@ -8,9 +8,9 @@ Thee `card-factory` serves as the central hub for the development and maintenanc
 
 The repository currently contains the following tools:
 
-- `image-merger`: A Python script for crafting AthletiFi digital player cards unique artwork by combining the image layers for background, border, player images, player info and other graphical elements into the final visual layout. For more specific details, refer to the [Image Merger README](image-merger/README.md).
+- **Image Merger**: A Python script for crafting AthletiFi digital player cards unique artwork by combining the image layers for background, border, player images, player info and other graphical elements into the final visual layout. For more specific details, refer to the [Image Merger README](image-merger/README.md).
 
-- `batch-qr-code-generator`: A Node.js script for batch generating QR codes for the print versions of AthletiFi Digital Player Cards. These QR codes are used on each physical player card, providing a link to the digital counterpart. For more information, refer to the [Batch QR Code Generator README](batch-qr-code-generator/README.md).
+- **Batch QR Code Generator**: A Node.js script for batch generating QR codes for the print versions of AthletiFi Digital Player Cards. These QR codes are used on each physical player card, providing a link to the digital counterpart. For more information, refer to the [Batch QR Code Generator README](batch-qr-code-generator/README.md).
 
 ## Getting Started
 

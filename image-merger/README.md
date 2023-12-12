@@ -26,7 +26,7 @@ This will install the Pillow library needed for the script to run.
 4. **Run the Script**: Execute the script by running:'
 
    ```sh
-   python image-merger.py
+   python merge-images.py
    ```
 
 Follow the prompts to input the number of layers, output directory, and paths for each layer.
