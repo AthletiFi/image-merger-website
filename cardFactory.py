@@ -1,41 +1,35 @@
 from PIL import Image
 import os
+import itertools
 
 def load_variations(folder):
     files = os.listdir(folder)
     images = [Image.open(os.path.join(folder, file)) for file in files]
     return images
-baseImageInput = input("Enter the file path for the base image: ")
-backgroundInput = input("Enter the path for the background image folder: ")
-playerInput = input("Enter the path for the player image folder: ")
-outputInput = input("Where do you want the images to output: ")
-baseImage = Image.open(baseImageInput)  #Change to file path containing the base 
-background_variations = load_variations(backgroundInput)  #Change to folder path containing backgrounds
-#border_variations = load_variations('assets/mouths') ---- There is only one boarder
-player_variations = load_variations('assets/Bronzeplayers/v1-v2 Bronze-Silver Players') #Change to folder path containing Players
-#def generate_combinations(base, backgrounds, borders, players): ---- orginal code Which acounts for mulitple borders
-   # count = 0
-    #for background in backgrounds:
-       # for border in borders:
-            #for player in players:
-               # new_image = base.copy()
-               # new_image.paste(background, (0, 0), background)
-                #new_image.paste(border, (0, 0), border)
-                #new_image.paste(player, (0, 0), player)
-                #new_image.save(f'output/image_{count}.png')
-                #count += 1
 
-def generate_combinations(base, backgrounds, players):
+numLayers = input("Enter the number of layers: ") 
+outputInput = input("Where do you want the images to output: ")
+layersPath = []             
+for i in range(int(numLayers)):
+    layerPath = input(f'Enter the folder path for layer {i + 1}: ') 
+    layersPath.append(load_variations(layerPath))
+
+
+
+def generate_combinations(layers):
     output_dir = outputInput
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     count = 0
-    for background in backgrounds:
-            for player in players:
-                new_image = base.copy()
-                new_image.paste(background, (0, 0), background)
-                new_image.paste(player, (0, 0), player)
-                new_image.save(f'{output_dir}/image_{count}.png')
-                count += 1
+    base_images = layers[0]
+    overlay_layers = layers[1:]
+    for base in base_images:
+        for layer_combination in itertools.product(*overlay_layers):
+            new_image = base.copy()
+            for overlay in layer_combination:
+                new_image.paste(overlay, (0, 0), overlay)
+            new_image.save(f'{output_dir}/image_{count}.png')
+            count += 1
+       
 
-generate_combinations(baseImage, background_variations, player_variations)
+generate_combinations(layersPath)
