@@ -13,17 +13,24 @@ The Image Combiner tool is a Python script used for creating composite images by
 
 1. **Set Up**: Ensure you have Python installed on your system. Place the script in a directory and create a `requirements.txt` file with the content `Pillow`.
 
-2. **Install Dependencies**: Run the command:
+2. Clone the repository
 
    ```sh
+   git clone https://github.com/AthletiFi/card-factory.git
+   ```
+
+3. Navigate to the `image-merger` directory and install dependencies
+
+   ```sh
+   cd card-factory/image-merger
    pip install -r requirements.txt
    ```
 
 This will install the Pillow library needed for the script to run.
 
-3. **Prepare Image Layers**: Organize your images into separate folders, each representing one layer. For example, one folder can contain background images, and another can contain character images.
+4. **Prepare Image Layers**: Organize your images into separate folders, each representing one layer. For example, one folder can contain background images, and another can contain character images.
 
-4. **Run the Script**: Execute the script by running:'
+5. **Run the Script**: Execute the script by running:'
 
    ```sh
    python merge-images.py
@@ -31,7 +38,7 @@ This will install the Pillow library needed for the script to run.
 
 Follow the prompts to input the number of layers, output directory, and paths for each layer.
 
-5. **Output**: The script will generate combinations of the provided images and save them in the specified output directory.
+6. **Output**: The script will generate combinations of the provided images and save them in the specified output directory.
 
 ## Customization
 
