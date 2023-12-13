@@ -51,4 +51,4 @@ You can customize the appearance and properties of the QR codes by editing the `
 - Module Not Found Errors: If you encounter module-related errors, try reinstalling the dependencies with npm install.
 - Output Directory Issues: Ensure the output directory for the generated QR codes exists. If it doesn't, create it or modify the script to point to an existing directory.
 
-For any other issues or questions, refer to the main repository's contact information.
+For any other issues or questions, please open an [issue](https://github.com/AthletiFi/card-factory/issues).

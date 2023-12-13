@@ -42,4 +42,4 @@ You can modify the script to change how images are combined, such as altering th
 - Ensure all folders contain only image files.
 - Verify that the Pillow library is correctly installed.
 
-For any other issues or questions, refer to the main repository's contact information.
+For any other issues or questions, please open an [issue](https://github.com/AthletiFi/card-factory/issues).

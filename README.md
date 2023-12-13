@@ -37,7 +37,7 @@ Each script within this repository plays a unique role in the AthletiFi digital 
 
 ## Contributing
 
-If you wish to contribute to the development of these smart contracts, please submit a pull request or open an issue to discuss the changes.
+If you wish to contribute to the development of these tools, please submit a pull request or open an issue to discuss the changes.
 
 ## License
 
