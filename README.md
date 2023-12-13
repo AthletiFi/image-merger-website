@@ -12,6 +12,8 @@ The repository currently contains the following tools:
 
 - **Batch QR Code Generator**: A Node.js script for batch generating QR codes for the print versions of AthletiFi Digital Player Cards. These QR codes are used on each physical player card, providing a link to the digital counterpart. For more information, refer to the [Batch QR Code Generator README](batch-qr-code-generator/README.md).
 
+- **Player Resizer Photoshop Script**: A Photoshop JS script designed to process player photos for AthletiFi player cards, ensuring all players are sized and positioned correctly within the card frame. It automates the resizing and repositioning of player images in Photoshop, specifically for the VSA collection player images. For more information, refer to the [Player Resizer Photoshop README](player-resizer-photoshop/README.md).
+
 ## Getting Started
 
 To get started with these scripts, you'll need to clone the repository and set up the environments for both the Python and Node.js components.

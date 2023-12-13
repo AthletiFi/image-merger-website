@@ -50,3 +50,7 @@ You can modify the script to change how images are combined, such as altering th
 - Verify that the Pillow library is correctly installed.
 
 For any other issues or questions, please open an [issue](https://github.com/AthletiFi/card-factory/issues).
+
+## License
+
+This script is part of the `card-factory` repository and is licensed under the BSD 3-Clause License. For full license details, see the [LICENSE](LICENSE) file in the main repository.

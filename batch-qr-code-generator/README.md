@@ -52,3 +52,7 @@ You can customize the appearance and properties of the QR codes by editing the `
 - Output Directory Issues: Ensure the output directory for the generated QR codes exists. If it doesn't, create it or modify the script to point to an existing directory.
 
 For any other issues or questions, please open an [issue](https://github.com/AthletiFi/card-factory/issues).
+
+## License
+
+This script is part of the `card-factory` repository and is licensed under the BSD 3-Clause License. For full license details, see the [LICENSE](LICENSE) file in the main repository.
