@@ -134,3 +134,5 @@ output
 #Mac Specific file
 .DS_Store
 
+#QR Codes!
+batch-qr-code-generator/qr_codes/*

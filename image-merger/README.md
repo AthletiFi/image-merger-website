@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Image Combiner script is a Python tool used for creating composite images by layering multiple images on top of each other. It's designed to work with a set of images separated into different layers, combining them into a single image.
+The Image Combiner tool is a Python script used for creating composite images by layering multiple images on top of each other. It's designed to work with a set of images separated into different layers, combining them into a single image.
 
 ## Requirements
 
