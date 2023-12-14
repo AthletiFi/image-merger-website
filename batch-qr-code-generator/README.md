@@ -34,7 +34,7 @@ The Batch QR Code Generator tool is a a Node.js application that generates QR co
 3. **Run the Script**: Execute the script by running:'
 
    ```sh
-   node src/batch-generate-qr.js
+   node batch-generate-qr.js
    ```
 
 4. **Enter the CSV file path**: After running the script, you will be prompted to enter the file path for your CSV file. Enter the path, including the filename and '.csv' at the end. If you placed the CSV file inside the `batch-qr-code-generator` directory, you can just enter the name of the file (e.g. `sample_urls.csv`)

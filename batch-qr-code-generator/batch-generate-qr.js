@@ -10,15 +10,22 @@ const rl = readline.createInterface({
 
 // Function to check if the input is a valid path
 const isValidPath = (path) => {
-  // Simple regex to check for a valid path format
-  const pathRegex = /^\.?\.?\/?([a-zA-Z0-9_-]+\/)*[a-zA-Z0-9_-]+\.csv$/;
+  // Trim the path to remove any leading or trailing whitespace
+  path = path.trim();
+
+  // Simplified regex to check if the file path ends with .csv
+  const pathRegex = /\.csv$/i;
   return pathRegex.test(path);
 };
+
 
 // Prompt for the CSV file path
 rl.question('Please enter the path to your CSV file: ', (csvFilePath) => {
 
-  // Check if the input is a valid path
+  // Trim the path to remove any leading or trailing whitespace
+  csvFilePath = csvFilePath.trim();
+
+  // Check if the input is a valid path after trimming
   if (!isValidPath(csvFilePath)) {
     console.error(`Error: The input '${csvFilePath}' is not a valid path for a csv file.`);
     rl.close();

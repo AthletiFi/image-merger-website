@@ -13,7 +13,8 @@ async function createQR(url, index, options) {
 
     try {
         // Save QR code as a PNG file
-        await qrCode.toFile(`./qr_codes/qr_${index}.png`, 'png');
+        await qrCode.toFile(`./qr_codes/qr_${index + 1}.png`, 'png');
+        console.log(`Generated QR code # ${index + 1}!`);
     } catch (error) {
         // Log any errors during QR code generation
         console.error(`Error generating QR code for ${url}:`, error);
@@ -38,7 +39,7 @@ function generateQRFromCSV(csvFilePath) {
                 return;
             }
             data.forEach((url, index) => createQR(url, index, qrCodeOptions));
-            console.log('QR Code generation completed! What do you think?');
+            console.log('QR Code generation has commenced! it will be done in a moment');
         })
         .on('error', (oopsie) => {
             // Handle any errors during CSV file reading

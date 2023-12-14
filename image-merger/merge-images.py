@@ -14,34 +14,49 @@ def sanitize_path(input_path):
 
 # Function to load images from a given directory or a single image file
 def load_variations(path):
+    print(f"Processing path: {path}")  # Print the path being processed
+
     # Remove any single or double quotes from the start and end of the path
     path = sanitize_path(path)  # Sanitize the input path
 
     # Check if the path is a file and load it directly as an image
     if os.path.isfile(path):
+        print("Path is a file. Loading image...")
+
         try:
             with Image.open(path) as image:
                 return [image.copy()]
 
         except IOError:
+            print(f"Error opening image file: {e}")
             # Raise an error if the file cannot be opened as an image
             raise IOError(f"Could not open image file: {path}")
 
     # Check if the path is a directory and load all images from it
     elif os.path.isdir(path):
+        print("Path is a directory. Loading images from directory...")
+
         # List all files in the directory
         files = os.listdir(path)
+        print(f"Found {len(files)} files. Filtering image files...")
+
         # Filter the files to include only common image formats
         image_files = [file for file in files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
+        print(f"Found {len(image_files)} image files.")
+        
         # Load and return all the image files found in the directory
         images = []
         for file in image_files:
-            with Image.open(os.path.join(path, file)) as img:
-                images.append(img.copy())
+            try:
+                with Image.open(os.path.join(path, file)) as img:
+                    images.append(img.copy())
+                    print(f"Loaded image: {file}")
+            except IOError as e:
+                print(f"Error opening image file: {file}, Error: {e}")
         
-
         return images
     else:
+        print("Path is not valid.")
         # Raise an error if the path is neither a file nor a directory
         raise FileNotFoundError(f"Path is not a valid file or directory: {path}")
 
@@ -58,25 +73,38 @@ numLayers = input("Enter the number of layers: ")
 
 # Prompt the user for the output directory and strip any quotes
 outputInput = sanitize_path(input("Where do you want the images to output: "))  # Sanitize the output directory path
-# Initialize lists to store the paths and images for each layer
-layerPaths = []
-layersPath = []
 
- # Collect all paths first
+# Initialize a list to store the paths for each layer
+layerPaths = []
+
+# Collect all the paths first
 for i in range(int(numLayers)):
-    
     layerPath = sanitize_path(input(f'Enter the folder path for layer {i + 1}: '))
     layerPaths.append(layerPath)
-    # Now load images for each layer
-    for i, path in enumerate(layerPaths):
-        images = load_variations(path)
 
-    # Check if opacity enhancement is required for the second layer
-    if i == 1:  # Layer 2
+# Initialize a list to store images for each layer
+layersPath = []             
+
+# Now load images for each layer
+for i, path in enumerate(layerPaths):
+    print(f"Working on Layer {i + 1}...")
+    images = []
+    if os.path.isdir(path):
+        files = os.listdir(path)
+        image_files = [file for file in files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
+        num_images = len(image_files)
+        for j, file in enumerate(image_files, start=1):
+            with Image.open(os.path.join(path, file)) as img:
+                images.append(img.copy())
+                print(f"Loaded image {j} of {num_images} for Layer {i + 1}: {file}")
+
+    # Optional opacity enhancement for Layer 2
+    if i == 1: 
         enhance_layer = input("Do you want to enhance the opacity of images in Layer 2? (yes/no): ").lower()
         if enhance_layer == 'yes':
             print("Enhancing the opacity of images in layer 2")
-            images = [enhance_opacity(img, factor=1.5) for img in images]    
+            images = [enhance_opacity(img, factor=1.5) for img in images]
+
     layersPath.append(images)
 
 # Function to generate all combinations of images from the different layers
