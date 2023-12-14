@@ -85,11 +85,19 @@ for player_name, photos in player_photos.items():
     else:
         print(f"No text layer found for player: {player_name}")
 
-print("\nUnmatched photo names:")
-print(unmatched_photos)
-
-print("\nUnmatched text layer names:")
-print(unmatched_texts)
-
 if count == 0:
     print("No images were generated. Please check the input directories and file naming conventions.")
+else:
+    print(f"Generated {count} images.")
+
+if unmatched_photos:
+    print("\nUnmatched photo names:")
+    print(unmatched_photos)
+else:
+    print("\nAll player photos matched successfully with text layers.")
+
+if unmatched_texts:
+    print("\nUnmatched text layer names:")
+    print(unmatched_texts)
+else:
+    print("\nAll text layers matched successfully with player photos.")
