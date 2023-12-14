@@ -5,7 +5,12 @@ import functools
 
 def sanitize_path(input_path):
     """ Sanitize the file path by replacing backslashes with spaces and stripping trailing spaces. """
-    return input_path.replace("\\", "").strip()
+    sanitized = input_path.replace("\\ ", " ").strip()
+    if os.path.exists(sanitized):
+        return sanitized
+    else:
+        raise FileNotFoundError(f"Sanitized path is not a valid file or directory: {sanitized}")
+
 
 # Function to load images from a given directory or a single image file
 def load_variations(path):
@@ -15,9 +20,9 @@ def load_variations(path):
     # Check if the path is a file and load it directly as an image
     if os.path.isfile(path):
         try:
-            # Open the image file and return it in a list
-            image = Image.open(path)
-            return [image]
+            with Image.open(path) as image:
+                return [image.copy()]
+
         except IOError:
             # Raise an error if the file cannot be opened as an image
             raise IOError(f"Could not open image file: {path}")
@@ -29,7 +34,12 @@ def load_variations(path):
         # Filter the files to include only common image formats
         image_files = [file for file in files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
         # Load and return all the image files found in the directory
-        images = [Image.open(os.path.join(path, file)) for file in image_files]
+        images = []
+        for file in image_files:
+            with Image.open(os.path.join(path, file)) as img:
+                images.append(img.copy())
+        
+
         return images
     else:
         # Raise an error if the path is neither a file nor a directory
@@ -48,21 +58,25 @@ numLayers = input("Enter the number of layers: ")
 
 # Prompt the user for the output directory and strip any quotes
 outputInput = sanitize_path(input("Where do you want the images to output: "))  # Sanitize the output directory path
+# Initialize lists to store the paths and images for each layer
+layerPaths = []
+layersPath = []
 
-# Initialize a list to store the paths for each layer
-layersPath = []             
+ # Collect all paths first
 for i in range(int(numLayers)):
-    # Add a note for layer 2 about enhancing opacity
-    if i == 1:  # Layer 2
-        print("Note: For Layer 2, the opacity of images will be enhanced.")
     
     layerPath = sanitize_path(input(f'Enter the folder path for layer {i + 1}: '))
-    images = load_variations(layerPath)
+    layerPaths.append(layerPath)
+    # Now load images for each layer
+    for i, path in enumerate(layerPaths):
+        images = load_variations(path)
 
-    if i == 1:  # Enhance the opacity of images in the second layer
-        print("Note: Enhancing the opacity of images in layer 2")
-        images = [enhance_opacity(img, factor=1.5) for img in images]
-    
+    # Check if opacity enhancement is required for the second layer
+    if i == 1:  # Layer 2
+        enhance_layer = input("Do you want to enhance the opacity of images in Layer 2? (yes/no): ").lower()
+        if enhance_layer == 'yes':
+            print("Enhancing the opacity of images in layer 2")
+            images = [enhance_opacity(img, factor=1.5) for img in images]    
     layersPath.append(images)
 
 # Function to generate all combinations of images from the different layers
@@ -82,7 +96,7 @@ def generate_combinations(layers):
 
     total_combinations = functools.reduce(lambda x, y: x * y, [len(layer) for layer in layers])
     print("\nCalculating total combinations...")
-    print("Total combinations = " + ' x '.join([str(len(layer)) for layer in layers]))
+    print("Total combinations = "  ' x '.join([str(len(layer)) for layer in layers]))
 
     print(f"Total combinations to generate: {total_combinations}")
 
@@ -98,7 +112,7 @@ def generate_combinations(layers):
             new_image.save(f'{output_dir}/image_{count}.png')
             print(f"Generating image {count} of {total_combinations}")
             
-            count += 1  # Increment the count for the next filename
+            count = 1  # Increment the count for the next filename
        
 # Generate the combinations of images
 generate_combinations(layersPath)
