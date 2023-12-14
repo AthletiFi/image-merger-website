@@ -60,7 +60,7 @@ def load_variations(path):
         # Raise an error if the path is neither a file nor a directory
         raise FileNotFoundError(f"Path is not a valid file or directory: {path}")
 
-def enhance_opacity(image, factor=1.0):
+def enhance_opacity(image, factor=1.2):
     """ Enhance the opacity of an image. """
     if image.mode == 'RGBA':
         r, g, b, alpha = image.split()
@@ -108,7 +108,7 @@ for i, path in enumerate(layerPaths):
     layersPath.append(images)
 
 # Function to generate all combinations of images from the different layers
-def generate_combinations(layers):
+def generate_combinations(layers, output_dir):
     # Create the output directory if it doesn't exist
     output_dir = outputInput
     if not os.path.exists(output_dir):
@@ -141,6 +141,14 @@ def generate_combinations(layers):
             print(f"Generating image {count} of {total_combinations}")
             
             count = 1  # Increment the count for the next filename
-       
-# Generate the combinations of images
-generate_combinations(layersPath)
+
+# Ask the user for the merging method
+merge_method = input("Enter 'MERGE' for a 1-for-1 merge of corresponding images or 'COMBINE' to generate all combinations: ").lower()
+if merge_method == 'merge' and len(layersPath) == 2 and len(layersPath[0]) == len(layersPath[1]):
+    merge_layers(layersPath[0], layersPath[1], outputInput)
+elif merge_method == 'combine':    
+    generate_combinations(layersPath, outputInput)
+else:
+    print("Invalid option or mismatched layers for merging.")
+
+
