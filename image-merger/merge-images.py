@@ -13,8 +13,10 @@ def sanitize_path(input_path):
 
 
 # Function to load images from a given directory or a single image file
-def load_variations(path):
-    print(f"Processing path: {path}")  # Print the path being processed
+def load_variations(path, replicate_to_match=None):
+    """ Load images from a given directory or a single image file.
+        If replicate_to_match is provided, replicate the image to match the number of images in another layer. """
+    print(f"Processing path: {path}")
 
     # Remove any single or double quotes from the start and end of the path
     path = sanitize_path(path)  # Sanitize the input path
@@ -25,9 +27,10 @@ def load_variations(path):
 
         try:
             with Image.open(path) as image:
-                return [image.copy()]
-
-        except IOError:
+                image_copy = image.copy()
+                # return [image_copy] * replicate_to_match if replicate_to_match else [image_copy]
+                return [image_copy] * (replicate_to_match if replicate_to_match else 1)
+        except IOError as e:
             print(f"Error opening image file: {e}")
             # Raise an error if the file cannot be opened as an image
             raise IOError(f"Could not open image file: {path}")
@@ -43,18 +46,18 @@ def load_variations(path):
         # Filter the files to include only common image formats
         image_files = [file for file in files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
         print(f"Found {len(image_files)} image files.")
-        
-        # Load and return all the image files found in the directory
+
+        # images = [Image.open(os.path.join(path, file)).copy() for file in image_files]
         images = []
-        for file in image_files:
+        for i, file in enumerate(image_files):
             try:
                 with Image.open(os.path.join(path, file)) as img:
                     images.append(img.copy())
-                    print(f"Loaded image: {file}")
+                    print(f"Loaded image {i + 1} of {len(image_files)} for path: {file}")
             except IOError as e:
-                print(f"Error opening image file: {file}, Error: {e}")
-        
+                print(f"Error opening image file: {e}")
         return images
+
     else:
         print("Path is not valid.")
         # Raise an error if the path is neither a file nor a directory
@@ -68,6 +71,14 @@ def enhance_opacity(image, factor=1.2):
         return Image.merge('RGBA', (r, g, b, alpha))
     return image
 
+def merge_layers(layer1, layer2, output_dir):
+    """ Merge two layers of images in a 1-for-1 fashion. """
+    for i, (image1, image2) in enumerate(zip(layer1, layer2)):
+        merged_image = image1.copy()
+        merged_image.paste(image2, (0, 0), image2)
+        merged_image.save(f'{output_dir}/merged_image_{i + 1}.png')
+        print(f'Merged image {i + 1} saved.')
+
 # Prompt the user for the number of layers
 numLayers = input("Enter the number of layers: ") 
 
@@ -75,36 +86,30 @@ numLayers = input("Enter the number of layers: ")
 outputInput = sanitize_path(input("Where do you want the images to output: "))  # Sanitize the output directory path
 
 # Initialize a list to store the paths for each layer
-layerPaths = []
-
-# Collect all the paths first
-for i in range(int(numLayers)):
-    layerPath = sanitize_path(input(f'Enter the folder path for layer {i + 1}: '))
-    layerPaths.append(layerPath)
+# layerPaths = []
+layerPaths = [sanitize_path(input(f'Enter the folder path for layer {i + 1}: ')) for i in range(int(numLayers))]
+# Determine the number of images in each layer to handle single image case
+num_images_in_layers = [len(os.listdir(path)) if os.path.isdir(path) else 1 for path in layerPaths]
 
 # Initialize a list to store images for each layer
-layersPath = []             
+layersPath = []
+
+# # Collect all the paths first
+# for i in range(int(numLayers)):
+#     layerPath = sanitize_path(input(f'Enter the folder path for layer {i + 1}: '))
+#     layerPaths.append(layerPath)
 
 # Now load images for each layer
 for i, path in enumerate(layerPaths):
     print(f"Working on Layer {i + 1}...")
-    images = []
-    if os.path.isdir(path):
-        files = os.listdir(path)
-        image_files = [file for file in files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.gif'))]
-        num_images = len(image_files)
-        for j, file in enumerate(image_files, start=1):
-            with Image.open(os.path.join(path, file)) as img:
-                images.append(img.copy())
-                print(f"Loaded image {j} of {num_images} for Layer {i + 1}: {file}")
-
-    # Optional opacity enhancement for Layer 2
-    if i == 1: 
+    replicate_count = None
+    if os.path.isfile(path) and i < len(num_images_in_layers) - 1:
+        replicate_count = num_images_in_layers[i + 1]
+    images = load_variations(path, replicate_to_match=replicate_count)
+    if i == 1:
         enhance_layer = input("Do you want to enhance the opacity of images in Layer 2? (yes/no): ").lower()
         if enhance_layer == 'yes':
-            print("Enhancing the opacity of images in layer 2")
             images = [enhance_opacity(img, factor=1.5) for img in images]
-
     layersPath.append(images)
 
 # Function to generate all combinations of images from the different layers
@@ -122,10 +127,11 @@ def generate_combinations(layers, output_dir):
     for i, layer in enumerate(layers, start=1):
         print(f"Layer {i}: {len(layer)} images")
 
-    total_combinations = functools.reduce(lambda x, y: x * y, [len(layer) for layer in layers])
+    # Calculate total combinations and print
+    layer_lengths = [len(layer) for layer in layers]
+    total_combinations = functools.reduce(lambda x, y: x * y, layer_lengths)
     print("\nCalculating total combinations...")
-    print("Total combinations = "  ' x '.join([str(len(layer)) for layer in layers]))
-
+    print("Total combinations = " + ' x '.join([str(length) for length in layer_lengths]))
     print(f"Total combinations to generate: {total_combinations}")
 
     # Loop through each base image
@@ -150,5 +156,4 @@ elif merge_method == 'combine':
     generate_combinations(layersPath, outputInput)
 else:
     print("Invalid option or mismatched layers for merging.")
-
 

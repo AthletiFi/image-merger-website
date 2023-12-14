@@ -4,7 +4,7 @@
 
 The AthletiFi Image Merger Tool includes two Python scripts:
 
-1. `merge-images.py`: A script for creating composite images by layering multiple images on top of each other. It is designed to work with a set of images separated into different layers, combining them into a single image.
+1. `merge-images.py`: A versatile script for creating composite images. It allows either merging images 1-for-1 from different layers or combining them in all possible combinations. Suitable for various image layering needs.
 
 2. `merge-text-layers-with-player-photos.py`: A script specifically tailored for overlaying text layers behind player photos. It enhances the text layer's opacity, ensures the text is visible behind the player, and names the output file based on the player's name and pose.
 
@@ -36,7 +36,7 @@ This will install the Pillow library needed for the scripts to run.
 
 ### For `merge-images.py`:
 
-1. **Prepare Image Layers**: Organize your images into separate folders, each representing one layer. For example, one folder can contain background images, and another can contain character images.
+1. **Prepare Image Layers**: Organize your images into separate folders, each representing one layer (e.g., backgrounds, characters).
 
 2. **Run the Script**: Execute the script by running:
 
@@ -44,9 +44,11 @@ This will install the Pillow library needed for the scripts to run.
    python merge-images.py
    ```
 
-Follow the prompts to input the number of layers, output directory, and paths for each layer.
+Follow prompts for layer numbers, output directory, and layer paths.
 
-3. **Output**: The script will generate combinations of the provided images and save them in the specified output directory.
+3. **Choose Method**: Select either 'MERGE' for a 1-for-1 merge or 'COMBINE' for all combinations.
+
+4. **Output**: The script will generate the merged or combined images and save them in the specified output directory.
 
 ### For `merge-text-layers-with-player-photos.py`:
 
