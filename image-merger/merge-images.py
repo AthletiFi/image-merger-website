@@ -35,6 +35,14 @@ def load_variations(path):
         # Raise an error if the path is neither a file nor a directory
         raise FileNotFoundError(f"Path is not a valid file or directory: {path}")
 
+def enhance_opacity(image, factor=1.0):
+    """ Enhance the opacity of an image. """
+    if image.mode == 'RGBA':
+        r, g, b, alpha = image.split()
+        alpha = alpha.point(lambda p: p * factor)
+        return Image.merge('RGBA', (r, g, b, alpha))
+    return image
+
 # Prompt the user for the number of layers
 numLayers = input("Enter the number of layers: ") 
 
@@ -44,9 +52,18 @@ outputInput = sanitize_path(input("Where do you want the images to output: "))  
 # Initialize a list to store the paths for each layer
 layersPath = []             
 for i in range(int(numLayers)):
-    # Prompt for the path of each layer and load the images
-    layerPath = sanitize_path(input(f'Enter the folder path for layer {i + 1}: '))  # Sanitize each layer path
-    layersPath.append(load_variations(layerPath))
+    # Add a note for layer 2 about enhancing opacity
+    if i == 1:  # Layer 2
+        print("Note: For Layer 2, the opacity of images will be enhanced.")
+    
+    layerPath = sanitize_path(input(f'Enter the folder path for layer {i + 1}: '))
+    images = load_variations(layerPath)
+
+    if i == 1:  # Enhance the opacity of images in the second layer
+        print("Note: Enhancing the opacity of images in layer 2")
+        images = [enhance_opacity(img, factor=1.5) for img in images]
+    
+    layersPath.append(images)
 
 # Function to generate all combinations of images from the different layers
 def generate_combinations(layers):
@@ -59,9 +76,16 @@ def generate_combinations(layers):
     base_images = layers[0]  # The first layer serves as the base images
     overlay_layers = layers[1:]  # Remaining layers are overlays
     
+    print("Number of images in each layer:")
+    for i, layer in enumerate(layers, start=1):
+        print(f"Layer {i}: {len(layer)} images")
+
     total_combinations = functools.reduce(lambda x, y: x * y, [len(layer) for layer in layers])
+    print("\nCalculating total combinations...")
+    print("Total combinations = " + ' x '.join([str(len(layer)) for layer in layers]))
+
     print(f"Total combinations to generate: {total_combinations}")
-    # ...
+
     # Loop through each base image
     for base in base_images:
         # Create all possible combinations of the overlay layers
@@ -73,6 +97,7 @@ def generate_combinations(layers):
             # Save the combined image
             new_image.save(f'{output_dir}/image_{count}.png')
             print(f"Generating image {count} of {total_combinations}")
+            
             count += 1  # Increment the count for the next filename
        
 # Generate the combinations of images
