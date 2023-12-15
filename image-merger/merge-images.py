@@ -59,13 +59,22 @@ def enhance_opacity(image, factor=1.2):
         return Image.merge('RGBA', (r, g, b, alpha))
     return image
 
-def merge_layers(layer1, layer2, output_dir):
-    """ Merge two layers of images in a 1-for-1 fashion. """
+def merge_layers(layer1, filenames1, layer2, filenames2, output_dir):
+    """ Merge two layers of images in a 1-for-1 fashion with concatenated filenames. """
     for i, (image1, image2) in enumerate(zip(layer1, layer2)):
         merged_image = image1.copy()
         merged_image.paste(image2, (0, 0), image2)
-        merged_image.save(f'{output_dir}/merged_image_{i + 1}.png')
-        print(f'Merged image {i + 1} saved.')
+
+        # Remove the file extension from each filename and concatenate them
+        filename1 = os.path.splitext(filenames1[i])[0]
+        filename2 = os.path.splitext(filenames2[i])[0]
+        # output_filename = f"{filename1}_{filename2}_{i+1}.png"
+        output_filename = f"{filename1}_-_{filename2}.png"
+
+        merged_image.save(os.path.join(output_dir, output_filename))
+        print(f'Merged image {i + 1} saved as {output_filename}.')
+
+
 
 numLayers = input("Enter the number of layers: ")
 outputInput = sanitize_path(input("Where do you want the images to output: "))
@@ -113,7 +122,8 @@ def generate_combinations(layers, filenames, output_dir):
 
 merge_method = input("Enter 'MERGE' for a 1-for-1 merge of corresponding images or 'COMBINE' to generate all combinations: ").lower()
 if merge_method == 'merge' and len(layersPath) == 2 and len(layersPath[0]) == len(layersPath[1]):
-    merge_layers(layersPath[0], layersPath[1], outputInput)
+    merge_layers(layersPath[0], all_filenames[0], layersPath[1], all_filenames[1], outputInput)
+
 elif merge_method == 'combine':
     generate_combinations(layersPath, all_filenames, outputInput)
 else:
