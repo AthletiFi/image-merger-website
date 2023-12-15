@@ -14,6 +14,8 @@ The repository currently contains the following tools:
 
 - **Player Resizer Photoshop Script**: A Photoshop JS script designed to process player photos for AthletiFi player cards, ensuring all players are sized and positioned correctly within the card frame. It automates the resizing and repositioning of player images in Photoshop, specifically for the VSA collection player images. For more information, refer to the [Player Resizer Photoshop README](player-resizer-photoshop/README.md).
 
+- **Rectangularizer Photoshop Script**: A Photoshop JS script designed to generates a new version of the square Player Cards for rectangular dimensions. It extends the frame and the background using a pre-designed overlay to match the existing  background. For more information, refer to the [Rectangularizer Photoshop README](rectangularizer-photoshop/README.md).
+
 ## Getting Started
 
 To get started with these scripts, you'll need to clone the repository and set up the environments for both the Python and Node.js components.
