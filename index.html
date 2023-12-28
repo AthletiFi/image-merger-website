@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Merger Tool</title>
+</head>
+<body>
+    <h1>Upload Images for Merging</h1>
+    <form action="/merge" method="post" enctype="multipart/form-data">
+        <label for="layer1">Select First Image (Layer 1):</label>
+        <input type="file" name="layer1" id="layer1" accept="image/*"><br><br>
+        <label for="layer2">Select Second Image (Layer 2):</label>
+        <input type="file" name="layer2" id="layer2" accept="image/*"><br><br>
+        <input type="submit" value="Merge Images">
+    </form>
+</body>
+</html>
