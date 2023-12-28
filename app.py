@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 from werkzeug.utils import secure_filename
 import os
-from image_merger.merge_images import sanitize_path, load_variations, merge_layers
+from image_merger.merge_images import process_merge
 
 app = Flask(__name__)
 UPLOAD_FOLDER = 'uploads'
@@ -39,14 +39,12 @@ def merge_images():
         file1.save(file1_path)
         file2.save(file2_path)
 
-        images1, _ = load_variations(file1_path)
-        images2, _ = load_variations(file2_path)
-
+        
         output_dir = os.path.join(app.config['UPLOAD_FOLDER'], 'merged')
         if not os.path.exists(output_dir):
             os.makedirs(output_dir)
 
-        merge_layers(images1, [filename1], images2, [filename2], output_dir)
+        process_merge([file1_path, file2_path], output_dir)
         return jsonify({"message": "Images merged successfully"}), 200
 
     return jsonify({"error": "Invalid file type"}), 400

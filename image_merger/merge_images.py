@@ -76,22 +76,22 @@ def merge_layers(layer1, filenames1, layer2, filenames2, output_dir):
 
 
 
-numLayers = input("Enter the number of layers: ")
-outputInput = sanitize_path(input("Where do you want the images to output: "))
-layerPaths = [sanitize_path(input(f'Enter the folder (or file) path for layer {i + 1}: ')) for i in range(int(numLayers))]
-num_images_in_layers = [len(os.listdir(path)) if os.path.isdir(path) else 1 for path in layerPaths]
+# numLayers = input("Enter the number of layers: ")
+# outputInput = sanitize_path(input("Where do you want the images to output: "))
+# layerPaths = [sanitize_path(input(f'Enter the folder (or file) path for layer {i + 1}: ')) for i in range(int(numLayers))]
+# num_images_in_layers = [len(os.listdir(path)) if os.path.isdir(path) else 1 for path in layerPaths]
 
-layersPath, all_filenames = [], []
-for i, path in enumerate(layerPaths):
-    print(f"Working on Layer {i + 1}...")
-    replicate_count = None if not os.path.isfile(path) or i == len(layerPaths) - 1 else num_images_in_layers[i + 1]
-    images, filenames = load_variations(path, replicate_count)
-    layersPath.append(images)
-    all_filenames.append(filenames)
-    if i == 1:
-        enhance_layer = input("Do you want to enhance the opacity of images in Layer 2? (yes/no): ").lower()
-        if enhance_layer == 'yes':
-            layersPath[i] = [enhance_opacity(img, factor=1.2) for img in images]
+# layersPath, all_filenames = [], []
+# for i, path in enumerate(layerPaths):
+#     print(f"Working on Layer {i + 1}...")
+#     replicate_count = None if not os.path.isfile(path) or i == len(layerPaths) - 1 else num_images_in_layers[i + 1]
+#     images, filenames = load_variations(path, replicate_count)
+#     layersPath.append(images)
+#     all_filenames.append(filenames)
+#     if i == 1:
+#         enhance_layer = input("Do you want to enhance the opacity of images in Layer 2? (yes/no): ").lower()
+#         if enhance_layer == 'yes':
+#             layersPath[i] = [enhance_opacity(img, factor=1.2) for img in images]
 
 def generate_combinations(layers, filenames, output_dir):
     if not os.path.exists(output_dir):
@@ -119,12 +119,41 @@ def generate_combinations(layers, filenames, output_dir):
         print(f"Generating image {count} of {total_combinations}: {output_filename}")
         count += 1
 
+def process_merge(layers_paths, output_dir, enhance_opacity_layer=2, enhance_factor=1.2):
+    layers, all_filenames = [], []
 
-merge_method = input("Enter 'MERGE' for a 1-for-1 merge of corresponding images or 'COMBINE' to generate all combinations: ").lower()
-if merge_method == 'merge' and len(layersPath) == 2 and len(layersPath[0]) == len(layersPath[1]):
-    merge_layers(layersPath[0], all_filenames[0], layersPath[1], all_filenames[1], outputInput)
+    for i, path in enumerate(layers_paths):
+        # Check if the path is a file or directory
+        if os.path.isfile(path):
+            # Load a single file
+            with Image.open(path) as img:
+                images = [img.copy()]
+                filenames = [os.path.basename(path)]
+        elif os.path.isdir(path):
+            # Load all images from directory
+            images, filenames = load_variations(path)
+        else:
+            raise ValueError(f"Invalid path: {path}")
 
-elif merge_method == 'combine':
-    generate_combinations(layersPath, all_filenames, outputInput)
-else:
-    print("Invalid option or mismatched layers for merging.")
+        layers.append(images)
+        all_filenames.append(filenames)
+
+        # Enhance opacity if required
+        if i == enhance_opacity_layer - 1:
+            layers[i] = [enhance_opacity(img, enhance_factor) for img in images]
+
+    # Merge or combine layers based on their count and sizes
+    if len(layers) == 2 and len(layers[0]) == len(layers[1]):
+        merge_layers(layers[0], all_filenames[0], layers[1], all_filenames[1], output_dir)
+    else:
+        generate_combinations(layers, all_filenames, output_dir)
+
+
+# merge_method = input("Enter 'MERGE' for a 1-for-1 merge of corresponding images or 'COMBINE' to generate all combinations: ").lower()
+# if merge_method == 'merge' and len(layersPath) == 2 and len(layersPath[0]) == len(layersPath[1]):
+#     merge_layers(layersPath[0], all_filenames[0], layersPath[1], all_filenames[1], outputInput)
+
+# elif merge_method == 'combine':
+#     generate_combinations(layersPath, all_filenames, outputInput)
+# else:
+#     print("Invalid option or mismatched layers for merging.")
