@@ -1,47 +1,47 @@
-# card-factory
+# Image Tools Web Application
 
 ## Overview
 
-Thee `card-factory` serves as the central hub for the development and maintenance of tools and scripts that are used in the creation process of AthletiFi digital player cards. 
+The `Image Tools Web Application` offers a convenient, web-based interface for two powerful digital asset creation tools:
+
+- **Image Merger**: An interactive tool designed to merge multiple image layers, such as backgrounds, borders, and text, into a cohesive visual design. Ideal for creating composite images for various purposes like digital cards, promotional graphics, or any project requiring layered image assembly.
+
+- **Batch QR Code Generator**: A user-friendly tool for generating QR codes in bulk, suitable for linking to digital content in print media, event tickets, business cards, or other physical products.
+
+This web application is intended for anyone needing to create composite images or batch QR codes, streamlining these processes with an accessible, easy-to-navigate interface.
 
 ### Contents
 
-The repository currently contains the following tools:
+This repository focuses on the web implementation of the following tools:
 
-- **Image Merger**: A Python script for crafting AthletiFi digital player cards unique artwork by combining the image layers for background, border, player images, player info and other graphical elements into the final visual layout. For more specific details, refer to the [Image Merger README](image-merger/README.md).
-
-- **Batch QR Code Generator**: A Node.js script for batch generating QR codes for the print versions of AthletiFi Digital Player Cards. These QR codes are used on each physical player card, providing a link to the digital counterpart. For more information, refer to the [Batch QR Code Generator README](batch-qr-code-generator/README.md).
-
-- **Player Resizer Photoshop Script**: A Photoshop JS script designed to process player photos for AthletiFi player cards, ensuring all players are sized and positioned correctly within the card frame. It automates the resizing and repositioning of player images in Photoshop, specifically for the VSA collection player images. For more information, refer to the [Player Resizer Photoshop README](player-resizer-photoshop/README.md).
-
-- **Rectangularizer Photoshop Script**: A Photoshop JS script designed to generates a new version of the square Player Cards for rectangular dimensions. It extends the frame and the background using a pre-designed overlay to match the existing  background. For more information, refer to the [Rectangularizer Photoshop README](rectangularizer-photoshop/README.md).
+- Web Interface for Image Merger
+- Web Interface for Batch QR Code Generator
 
 ## Getting Started
 
-To get started with these scripts, you'll need to clone the repository and set up the environments for both the Python and Node.js components.
-
 ### Prerequisites
 
-- Python 3.x
-- Node.js
+- A modern web browser.
 
 ### Installation
 
-1. Clone the repository
+Access the web application through its hosted URL. For local development:
+
+1. Clone the repository:
 
    ```sh
-   git clone https://github.com/AthletiFi/card-factory.git
+   git clone https://github.com/YourUsername/Image-Tools-Web-App.git
    ```
 
-2. Navigate to the script directory of your choice and follow the setup instructions in the respective README file.
+2. Navigate to the cloned directory and set up as per the provided documentation.
 
 ## Usage
 
-Each script within this repository plays a unique role in the AthletiFi digital player card generation process. Navigate to the respective directories and consult their README files for detailed usage instructions.
+The web application provides a simple, intuitive interface. Visit the application URL, choose the desired tool, and follow the on-screen prompts to create your digital assets.
 
 ## Contributing
 
-If you wish to contribute to the development of these tools, please submit a pull request or open an issue to discuss the changes.
+We welcome contributions to enhance this web application. Please fork the repository for any modifications and submit a pull request for review. Open an issue first for substantial changes or feature additions.
 
 ## License
 
