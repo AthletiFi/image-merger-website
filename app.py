@@ -5,7 +5,7 @@ from image_merger.merge_images import process_merge
 import uuid
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key' #Chat Gpt says add secret key idk why 
+app.config['SECRET_KEY'] = 'your_secret_key' #Change your_secret_key to an environment variable" 
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'bmp', 'gif'}
 

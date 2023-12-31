@@ -136,3 +136,6 @@ output
 
 #QR Codes!
 batch-qr-code-generator/qr_codes/*
+
+#uploads
+uploads/*
